@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gldani — Name Name</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        .slide { display: none; }
+        .slide.active { display: block; }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white min-h-screen">
 
+    <!-- Header -->
+    <div class="fixed top-0 left-0 z-50 p-8">
+        <a href="home.html" class="text-3xl tracking-widest font-light hover:text-amber-300">
+            NAME NAME
+        </a>
+    </div>
+
+    <div class="pt-28 px-4 max-w-5xl mx-auto relative">
+
+        <h1 class="text-5xl font-light mb-2 text-center">Gldani</h1>
+        <p class="text-center text-white/60 mb-12">202X — Documentary Series</p>
+
+        <!-- Slideshow Container -->
+        <div id="slideshow" class="relative">
+            
+            <!-- Bilder werden hier automatisch eingefügt -->
+
+            <!-- Linker Pfeil -->
+            <button onclick="prevSlide()" 
+                    class="absolute left-4 top-1/2 -translate-y-1/2 text-4xl p-4 hover:text-amber-300 transition z-10">
+                ←
+            </button>
+
+            <!-- Rechter Pfeil -->
+            <button onclick="nextSlide()" 
+                    class="absolute right-4 top-1/2 -translate-y-1/2 text-4xl p-4 hover:text-amber-300 transition z-10">
+                →
+            </button>
+        </div>
+
+        <!-- Bild Nummer -->
+        <div class="text-center mt-8 text-white/50">
+            <span id="current">1</span> / 32
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = [];
+
+        // Hier die Bilder einfügen (automatisch)
+        for (let i = 1; i <= 32; i++) {
+            const img = document.createElement('img');
+            img.src = `bilder/gldani/gldani-${i.toString().padStart(2, '0')}.jpg`;
+            img.className = `slide w-full rounded-lg shadow-2xl mx-auto ${i === 1 ? 'active' : ''}`;
+            img.alt = `Gldani ${i}`;
+            document.getElementById('slideshow').appendChild(img);
+            slides.push(img);
+        }
+
+        function showSlide(n) {
+            slides.forEach(s => s.classList.remove('active'));
+            slides[n].classList.add('active');
+            document.getElementById('current').textContent = n + 1;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Tastatur-Steuerung (Pfeiltasten)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+
+</body>
+</html>
