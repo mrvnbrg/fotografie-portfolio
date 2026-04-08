@@ -9,7 +9,6 @@
     <style>
         .slide { display: none; }
         .slide.active { display: block; }
-        .info-box { display: none; }
     </style>
 </head>
 <body class="bg-zinc-950 text-white min-h-screen overflow-hidden">
@@ -24,20 +23,11 @@
     <!-- Slideshow -->
     <div class="h-screen flex items-center justify-center p-8 relative" id="slideshow-container">
         
-        <!-- Bilder kommen hier rein -->
-
         <!-- Info Button unten links -->
         <div class="fixed bottom-8 left-8 z-50 group">
             <div id="info-button"
                  class="w-10 h-10 flex items-center justify-center text-3xl cursor-pointer hover:text-amber-300 transition-colors">
                 ?
-            </div>
-            
-            <!-- Info Text Box -->
-            <div id="info-box" class="info-box absolute bottom-14 left-0 bg-black/90 backdrop-blur-md p-8 max-w-md rounded-lg shadow-2xl text-sm leading-relaxed">
-                [2023] Gldani – A district in the north of Tbilisi, Georgia, and home to over 300,000 people. During the Soviet era, prefabricated housing estates were built here for factory workers and ordinary citizens.<br><br>
-                
-                Today, the neighborhood is undergoing a major transformation. A new large shopping mall has opened, while traditional markets and bazaars are gradually making way for new sports facilities, parks, and modern residential buildings. Young families and the middle class are increasingly settling in the area. The district serves as a living time capsule, showing how older Soviet structures are co-existing and colliding with new Western influences.
             </div>
         </div>
 
@@ -58,7 +48,6 @@
         let currentSlide = 0;
         const slides = [];
 
-        // Bilder laden (mit deinem längeren Pfad)
         for (let i = 1; i <= 32; i++) {
             const img = document.createElement('img');
             img.src = `bilder/gldani/bilder/gldani-${i.toString().padStart(2, '0')}.jpg`;
@@ -85,25 +74,38 @@
             showSlide(currentSlide);
         }
 
-        // Tastatur
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') prevSlide();
         });
 
-        // Info Hover
+        // === INFO HOVER ===
         const infoButton = document.getElementById('info-button');
-        const infoBox = document.getElementById('info-box');
 
         infoButton.addEventListener('mouseenter', () => {
-            infoBox.style.display = 'block';
-            // Dunkle Overlay auf aktuelles Bild
-            slides[currentSlide].style.filter = 'brightness(0.4)';
+            const currentImg = slides[currentSlide];
+            currentImg.style.filter = 'brightness(0.25)';   // noch dunkler
+
+            // Text direkt über dem Bild
+            let textDiv = document.getElementById('overlay-text');
+            if (!textDiv) {
+                textDiv = document.createElement('div');
+                textDiv.id = 'overlay-text';
+                textDiv.className = `absolute bottom-16 left-1/2 -translate-x-1/2 max-w-3xl px-8 py-6 text-center text-white/90 text-[17px] leading-relaxed backdrop-blur-sm bg-black/40 rounded-xl`;
+                textDiv.innerHTML = `
+                    [2023] Gldani – A district in the north of Tbilisi, Georgia, and home to over 300,000 people. During the Soviet era, prefabricated housing estates were built here for factory workers and ordinary citizens.<br><br>
+                    
+                    Today, the neighborhood is undergoing a major transformation. A new large shopping mall has opened, while traditional markets and bazaars are gradually making way for new sports facilities, parks, and modern residential buildings. Young families and the middle class are increasingly settling in the area. The district serves as a living time capsule, showing how older Soviet structures are co-existing and colliding with new Western influences.
+                `;
+                document.getElementById('slideshow-container').appendChild(textDiv);
+            }
+            textDiv.style.display = 'block';
         });
 
         infoButton.addEventListener('mouseleave', () => {
-            infoBox.style.display = 'none';
             slides[currentSlide].style.filter = 'none';
+            const textDiv = document.getElementById('overlay-text');
+            if (textDiv) textDiv.style.display = 'none';
         });
     </script>
 
