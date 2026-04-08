@@ -104,4 +104,10 @@
 
         infoButton.addEventListener('mouseleave', () => {
             slides[currentSlide].style.filter = 'none';
-            const text
+            const textDiv = document.getElementById('overlay-text');
+            if (textDiv) textDiv.style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
