@@ -7,7 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        body {
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        .background {
             background-image: url('https://picsum.photos/id/1015/2000/1200');
             background-size: cover;
             background-position: center;
@@ -15,25 +20,19 @@
         }
     </style>
 </head>
-<body class="bg-black text-white min-h-screen flex items-center justify-center">
+<body class="background text-white">
 
-    <div class="text-center">
-        <!-- Hier kommt später dein großes Bild hin -->
-        <div class="mb-16">
-            <img src="https://picsum.photos/id/1015/800/600" 
-                 alt="Name Name" 
-                 class="mx-auto rounded-lg shadow-2xl opacity-90">
-        </div>
-        
-        <h1 class="text-6xl md:text-7xl tracking-widest font-light">Marvin Berge</h1>
-        
-        <div class="mt-20">
-            <a href="home.html" 
-               class="inline-block border border-white/40 hover:border-white px-10 py-5 text-sm tracking-[3px] transition-all hover:bg-white hover:text-black">
-                ENTER PORTFOLIO
-            </a>
-        </div>
-    </div>
+    <!-- Name - anklickbar -->
+    <a href="home.html" 
+       class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl md:text-7xl tracking-widest font-light hover:text-amber-300 transition-colors cursor-pointer z-10">
+        Marvin Berge
+    </a>
+
+    <!-- Pfeil unten - auch anklickbar -->
+    <a href="home.html" 
+       class="absolute bottom-12 left-1/2 -translate-x-1/2 text-4xl hover:text-amber-300 transition-all animate-bounce z-10">
+        ↓
+    </a>
 
 </body>
 </html>
