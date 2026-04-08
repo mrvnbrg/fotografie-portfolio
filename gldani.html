@@ -84,14 +84,14 @@
 
         infoButton.addEventListener('mouseenter', () => {
             const currentImg = slides[currentSlide];
-            currentImg.style.filter = 'brightness(0.25)';   // noch dunkler
+            currentImg.style.filter = 'brightness(0.3)';   // noch etwas dunkler
 
-            // Text direkt über dem Bild
             let textDiv = document.getElementById('overlay-text');
             if (!textDiv) {
                 textDiv = document.createElement('div');
                 textDiv.id = 'overlay-text';
-                textDiv.className = `absolute bottom-16 left-1/2 -translate-x-1/2 max-w-3xl px-8 py-6 text-center text-white/90 text-[17px] leading-relaxed backdrop-blur-sm bg-black/40 rounded-xl`;
+                textDiv.className = `absolute inset-0 flex items-center justify-center px-12 text-center text-white leading-relaxed pointer-events-none`;
+                textDiv.style.fontSize = '1.35rem';
                 textDiv.innerHTML = `
                     [2023] Gldani – A district in the north of Tbilisi, Georgia, and home to over 300,000 people. During the Soviet era, prefabricated housing estates were built here for factory workers and ordinary citizens.<br><br>
                     
@@ -99,15 +99,9 @@
                 `;
                 document.getElementById('slideshow-container').appendChild(textDiv);
             }
-            textDiv.style.display = 'block';
+            textDiv.style.display = 'flex';
         });
 
         infoButton.addEventListener('mouseleave', () => {
             slides[currentSlide].style.filter = 'none';
-            const textDiv = document.getElementById('overlay-text');
-            if (textDiv) textDiv.style.display = 'none';
-        });
-    </script>
-
-</body>
-</html>
+            const text
