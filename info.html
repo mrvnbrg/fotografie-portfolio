@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -8,17 +8,16 @@
 </head>
 <body class="bg-zinc-950 text-white min-h-screen">
 
-    <!-- Kleiner Header oben links -->
-    <div class="fixed top-0 left-0 z-20 p-8">
+    <!-- Kleiner transparenter Header -->
+    <div class="fixed top-0 left-0 z-30 p-8">
         <a href="home.html" class="text-3xl tracking-widest font-light hover:text-amber-300 transition-colors">
             NAME NAME
         </a>
     </div>
 
-    <!-- Hauptinhalt -->
     <div class="flex min-h-screen pt-20">
         
-        <!-- Linke Info-Spalte (Farbe #426774) -->
+        <!-- Linke Info-Spalte (blau) -->
         <div class="w-5/12 bg-[#426774] p-12 md:p-16 flex flex-col">
             <div class="mt-auto">
                 <h2 class="text-4xl font-light mb-12">info</h2>
@@ -48,26 +47,27 @@
             </div>
         </div>
 
-        <!-- Rechte Bild-Spalte -->
-        <div class="flex-1 relative">
-            <img src="aboutme1.jpg" 
-                 alt="About Me" 
-                 class="absolute inset-0 w-full h-full object-cover"
-                 style="object-position: center bottom;">
-            
-            <!-- Dunkler Verlauf für bessere Lesbarkeit -->
-            <div class="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/70"></div>
-            
-            <!-- Text rechts unten, rechtsbündig -->
-            <div class="absolute bottom-16 right-12 max-w-md text-right">
-                <p class="leading-relaxed text-[17px] text-white">
-                    Someone who views life as a mystery is driven by curiosity and a deep urge to explore. They are drawn by a deep longing for what could lie beyond - as if the answers lie in the space between the outer world and the depths of their own mind.<br><br>
-                    
-                    A seeker will always seek, knowing this search will probably never truly end. Yet this journey is the point of it all.<br><br>
-                    
-                    Photography has become my way of exploring.<br><br>
-                    <span class="italic">Capturing my cosmos.</span>
-                </p>
+        <!-- Rechte Seite mit Foto + Abstand -->
+        <div class="flex-1 p-8 md:p-12 flex items-center">
+            <div class="relative w-full max-w-2xl mx-auto">
+                
+                <!-- Foto mit Rand -->
+                <img src="aboutme1.jpg" 
+                     alt="About Me" 
+                     class="w-full rounded-lg shadow-2xl"
+                     style="object-fit: cover; object-position: center bottom; aspect-ratio: 4/5;">
+                
+                <!-- Text oben rechts im Foto -->
+                <div class="absolute top-8 right-8 max-w-xs text-right">
+                    <p class="leading-relaxed text-[17px] text-white drop-shadow-md">
+                        Someone who views life as a mystery is driven by curiosity and a deep urge to explore. They are drawn by a deep longing for what could lie beyond - as if the answers lie in the space between the outer world and the depths of their own mind.<br><br>
+                        
+                        A seeker will always seek, knowing this search will probably never truly end. Yet this journey is the point of it all.<br><br>
+                        
+                        Photography has become my way of exploring.<br><br>
+                        <span class="italic">Capturing my cosmos.</span>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
