@@ -84,18 +84,20 @@
 
         infoButton.addEventListener('mouseenter', () => {
             const currentImg = slides[currentSlide];
-            currentImg.style.filter = 'brightness(0.3)';   // noch etwas dunkler
+            currentImg.style.filter = 'brightness(0.3)';
 
             let textDiv = document.getElementById('overlay-text');
             if (!textDiv) {
                 textDiv = document.createElement('div');
                 textDiv.id = 'overlay-text';
-                textDiv.className = `absolute inset-0 flex items-center justify-center px-12 text-center text-white leading-relaxed pointer-events-none`;
+                textDiv.className = `absolute inset-0 flex items-center justify-center px-8 pointer-events-none`;
                 textDiv.style.fontSize = '1.35rem';
                 textDiv.innerHTML = `
-                    [2023] Gldani – A district in the north of Tbilisi, Georgia, and home to over 300,000 people. During the Soviet era, prefabricated housing estates were built here for factory workers and ordinary citizens.<br><br>
-                    
-                    Today, the neighborhood is undergoing a major transformation. A new large shopping mall has opened, while traditional markets and bazaars are gradually making way for new sports facilities, parks, and modern residential buildings. Young families and the middle class are increasingly settling in the area. The district serves as a living time capsule, showing how older Soviet structures are co-existing and colliding with new Western influences.
+                    <div class="max-w-2xl text-center leading-relaxed">
+                        [2023] Gldani – A district in the north of Tbilisi, Georgia, and home to over 300,000 people. During the Soviet era, prefabricated housing estates were built here for factory workers and ordinary citizens.<br><br>
+                        
+                        Today, the neighborhood is undergoing a major transformation. A new large shopping mall has opened, while traditional markets and bazaars are gradually making way for new sports facilities, parks, and modern residential buildings. Young families and the middle class are increasingly settling in the area. The district serves as a living time capsule, showing how older Soviet structures are co-existing and colliding with new Western influences.
+                    </div>
                 `;
                 document.getElementById('slideshow-container').appendChild(textDiv);
             }
