@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info — Name Name</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-950 text-white min-h-screen">
 
+    <!-- Sidebar Navigation -->
+    <div class="fixed left-0 top-0 h-full w-80 p-10 flex flex-col z-20">
+        <h1 class="text-5xl tracking-widest mb-16">
+            <a href="home.html" class="hover:text-amber-300 transition-colors">NAME NAME</a>
+        </h1>
+        
+        <nav class="flex-1 space-y-10 text-lg">
+            <div>
+                <h2 class="text-xs tracking-[2px] text-gray-400 mb-4">PROJECTS</h2>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-amber-300 transition-colors">Portals</a></li>
+                    <li><a href="#" class="hover:text-amber-300 transition-colors">Night Walk</a></li>
+                    <li><a href="#" class="hover:text-amber-300 transition-colors">nAIked</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h2 class="text-xs tracking-[2px] text-gray-400 mb-4">DOCUMENTARY</h2>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-amber-300 transition-colors">Gldani</a></li>
+                    <li><a href="#" class="hover:text-amber-300 transition-colors">Pottstraßen</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h2 class="text-xs tracking-[2px] text-gray-400 mb-4">OTHER</h2>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-amber-300 transition-colors">daily digicam</a></li>
+                    <li><a href="#" class="hover:text-amber-300 transition-colors">exploration of self</a></li>
+                    <li><a href="#" class="hover:text-amber-300 transition-colors">short stories</a></li>
+                    <li><a href="#" class="hover:text-amber-300 transition-colors">landscapes</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="pt-12">
+            <a href="info.html" class="text-lg text-amber-300">INFO</a>
+        </div>
+    </div>
+
+    <!-- Hauptinhalt -->
+    <div class="ml-80 flex min-h-screen">
+        
+        <!-- Linke Info-Spalte (Farbe #426774) -->
+        <div class="w-5/12 bg-[#426774] p-12 md:p-16 flex flex-col">
+            <div class="mt-auto">
+                <h2 class="text-4xl font-light mb-12">info</h2>
+                
+                <div class="space-y-8 text-lg">
+                    <div>
+                        <p><strong>Name:</strong> Ma Be</p>
+                        <p><strong>Age:</strong> 24 years old</p>
+                        <p><strong>Location:</strong> Hamburg, Germany / Campervan</p>
+                    </div>
+                    
+                    <div>
+                        <p class="uppercase tracking-widest text-sm mb-2">contact:</p>
+                        <p>Instagram: @m.a..</p>
+                        <p>Email: mma@...</p>
+                    </div>
+                    
+                    <div>
+                        <p class="uppercase tracking-widest text-sm mb-3">group exhibitions:</p>
+                        <div class="space-y-4 text-base">
+                            <p>[2023] 44309//GALLERY Dortmund - f2 Fotofestival</p>
+                            <p>[2023] "Spekulativ" Gallery FH-Dortmund</p>
+                            <p>[2018] Hamburg Deichtorhallen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rechte Bild-Spalte mit Text-Overlay -->
+        <div class="flex-1 relative">
+            <img src="aboutme1.jpg" 
+                 alt="About Me" 
+                 class="absolute inset-0 w-full h-full object-cover">
+            
+            <!-- Dunkler Verlauf für bessere Lesbarkeit -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/60"></div>
+            
+            <!-- Text auf dem Bild -->
+            <div class="absolute bottom-16 left-12 right-12 max-w-lg text-white">
+                <p class="leading-relaxed text-[17px]">
+                    Someone who views life as a mystery is driven by curiosity and a deep urge to explore. They are drawn by a deep longing for what could lie beyond - as if the answers lie in the space between the outer world and the depths of their own mind.<br><br>
+                    
+                    A seeker will always seek, knowing this search will probably never truly end. Yet this journey is the point of it all.<br><br>
+                    
+                    Photography has become my way of exploring.<br><br>
+                    <span class="italic">Capturing my cosmos.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
