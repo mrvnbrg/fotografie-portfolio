@@ -79,12 +79,14 @@
             if (e.key === 'ArrowLeft') prevSlide();
         });
 
-        // === INFO HOVER ===
+        // === INFO HOVER - Dunklerer Hintergrund ===
         const infoButton = document.getElementById('info-button');
 
         infoButton.addEventListener('mouseenter', () => {
             const currentImg = slides[currentSlide];
-            currentImg.style.filter = 'brightness(0.3)';
+            
+            // Sehr dunkler Overlay
+            currentImg.style.filter = 'brightness(0.15)';
 
             let textDiv = document.getElementById('overlay-text');
             if (!textDiv) {
