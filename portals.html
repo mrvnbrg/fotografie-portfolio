@@ -15,17 +15,64 @@
             background-color: #ffffff;
         }
         
-        .photo-container {
+        .intro {
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .intro-content {
+            max-width: 700px;
+        }
+        
+        .intro h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+        
+        .intro-quote {
+            font-size: 1.125rem;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .intro-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 4rem;
+        }
+        
+        .scroll-indicator {
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            color: #666;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+        
+        .photo-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
         }
         
         .photo-container img {
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 85%;
+            max-height: 85%;
             object-fit: contain;
         }
         
@@ -33,7 +80,7 @@
             position: fixed;
             bottom: 40px;
             right: 40px;
-            font-size: 2.5rem;
+            font-size: 1.875rem;
             cursor: pointer;
             opacity: 0.6;
             transition: opacity 0.3s ease;
@@ -70,6 +117,23 @@
     <!-- Fixed Header -->
     <div class="header">
         <a href="home.html" class="tracking-widest">Marvin Berge</a>
+    </div>
+
+    <!-- Intro Section -->
+    <div class="intro">
+        <div class="intro-content">
+            <h1>Portals</h1>
+            <p class="intro-quote">"Come to me, the dream whispers, and you can have one more chance." - William Kittredge</p>
+            <p class="intro-text">
+                Feeling disconnected from life, far from reality, like a stranger.<br>
+                Searching for places outside of myself, looking for places to hide, to flee into.<br><br>
+                
+                At a time when I was not in a good place mentally, I looked for deeper meaning in every photograph I took and gravitated towards places that felt like portals to me. Moments that whispered to me. As if, by stepping through them and disappearing into them, I could find a sudden answer within.. the answer to the question and the longing to feel connected again. These were moments where I felt that I almost was...<br><br>
+                
+                In retrospect, these photographs remind me that things need their time.
+            </p>
+            <p class="scroll-indicator">scroll ↓</p>
+        </div>
     </div>
 
     <!-- Photos Container -->
