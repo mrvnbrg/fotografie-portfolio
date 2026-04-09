@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portals — Marvin Berge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: #ffffff;
+        }
+        
+        .photo-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        
+        .photo-container img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        
+        .scroll-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            z-index: 30;
+        }
+        
+        .scroll-to-top:hover {
+            opacity: 1;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 40;
+            padding: 2rem;
+        }
+        
+        .header a {
+            font-size: 1.875rem;
+            letter-spacing: 0.1em;
+            font-weight: 300;
+            color: #000;
+            transition: color 0.3s ease;
+        }
+        
+        .header a:hover {
+            color: #b45309;
+        }
+    </style>
+</head>
+<body class="text-black">
+
+    <!-- Fixed Header -->
+    <div class="header">
+        <a href="home.html" class="tracking-widest">Marvin Berge</a>
+    </div>
+
+    <!-- Photos Container -->
+    <div id="photos-container">
+        <!-- Fotos werden hier eingefügt -->
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top" onclick="scrollToTop()">↑</div>
+
+    <script>
+        const photoCount = 28;
+        const container = document.getElementById('photos-container');
+        
+        // Alle 28 Fotos laden
+        for (let i = 1; i <= photoCount; i++) {
+            const photoDiv = document.createElement('div');
+            photoDiv.className = 'photo-container';
+            
+            const img = document.createElement('img');
+            img.src = `portals/portals (${i}).jpg`;
+            img.alt = `Portals ${i}`;
+            
+            photoDiv.appendChild(img);
+            container.appendChild(photoDiv);
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+</body>
+</html>
