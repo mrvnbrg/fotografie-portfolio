@@ -7,8 +7,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        .slide { display: none; }
+        .slide { 
+            display: none;
+        }
         .slide.active { display: block; }
+        
+        .slide { 
+            display: none;
+            width: auto !important;
+            max-width: 90%;
+            border-radius: 0 !important;
+        }
+        .slide.active { 
+            display: block;
+            border: 3px solid white;
+        }
         
         #info-button {
             width: 50px;
