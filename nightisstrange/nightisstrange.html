@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nightwalk Flow</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+      font-family: 'Arial', 'Helvetica Neue', sans-serif;
+      color: white;
+    }
+
+    /* Start Screen */
+    #startScreen {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.96);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .logo {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .logo:hover { opacity: 0.6; }
+
+    h1 {
+      font-size: 5rem;
+      font-weight: 200;
+      letter-spacing: 12px;
+      margin: 0 0 2rem 0;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      max-width: 720px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      opacity: 0.85;
+      margin-bottom: 3.5rem;
+    }
+
+    #playButton {
+      background: white;
+      color: black;
+      border: none;
+      padding: 1.2em 4em;
+      font-size: 1.4rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+    #playButton:hover {
+      background: #ddd;
+      transform: scale(1.04);
+    }
+
+    /* Animation Rows */
+    .row {
+      width: 100%;
+      height: 50%;
+      display: flex;
+      overflow: hidden;
+      margin: 0;
+    }
+    .strip {
+      display: flex;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      width: max-content;
+    }
+    .top .strip {
+      animation-name: scroll-left;
+      animation-duration: 750s;
+    }
+    .bottom .strip {
+      animation-name: scroll-right;
+      animation-duration: 750s;
+    }
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes scroll-right {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+    .strip img {
+      height: 50vh;
+      flex-shrink: 0;
+      object-fit: contain;
+      transition: opacity 2s ease;
+      user-select: none;
+      pointer-events: none;
+      display: block;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Start Screen -->
+  <div id="startScreen">
+    <div class="logo" onclick="window.location.href='../home.html'">
+      MARVIN BERGE
+    </div>
+
+    
+    
+    <p class="subtitle">
+      [2025] Night is Strange<br><br>
+      For one full year, I documented my neighborhood in Hamburg, Germany, in a different, more intimate way. 
+      Almost every night I walked nearly every street in my district, accompanied only by an old, small digital camera. 
+      Without a fixed plan or route, driven by genuine curiosity about what the night and the empty streets would reveal.<br><br>
+      In the installation these images are presented in a self-programmed endless loop. 
+      An algorithm continuously and randomly selects new combinations. There is no repetition, no fixed sequence. 
+      The pictures flow into one another and it becomes quite hypnotizing as new random dialogues between the images emerge every few seconds. 
+      Suddenly forms, textures, colors, and motives begin to relate to each other. I recommend activating the fullscreen.
+    </p>
+
+    <button id="playButton">PLAY</button>
+  </div>
+
+  <!-- Animation -->
+  <div class="row top"><div class="strip" id="strip-top"></div></div>
+  <div class="row bottom"><div class="strip" id="strip-bottom"></div></div>
+
+  <audio id="swapSound" src="wechsel.mp3" preload="auto"></audio>
+  <script src="images.js"></script>
+  <script>
+    let topStrip = document.getElementById("strip-top");
+    let bottomStrip = document.getElementById("strip-bottom");
+
+    const STRIP_REPEAT = 2;
+    const CENTER_ZONE = 0.3;
+    const SWAP_INTERVAL_MIN = 3000;
+    const SWAP_INTERVAL_MAX = 5000;
+    const SWAP_PROTECTION = 15000;
+    const SWAP_DELAY = 1000;
+
+    let runningPool = [];
+    let swapPool = [];
+    let swapQueue = [];
+    const swapCooldown = new Map();
+    let lastSwapTop = 0;
+    let lastSwapBottom = 0;
+    const swapSound = document.getElementById("swapSound");
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function splitPools() {
+      if (!topStrip || !bottomStrip || topStrip.children.length === 0 || bottomStrip.children.length === 0) {
+        const shuffled = [...images];
+        shuffle(shuffled);
+        const swapCount = Math.floor(images.length * 0.35);
+        swapPool = shuffled.splice(0, swapCount);
+        runningPool = shuffled;
+        swapQueue = [...swapPool];
+        shuffle(swapQueue);
+        return;
+      }
+
+      const allVisible = new Set([
+        ...getVisibleImages(topStrip).map(i => i.dataset.src),
+        ...getVisibleImages(bottomStrip).map(i => i.dataset.src)
+      ]);
+
+      let candidates = runningPool.filter(src => !allVisible.has(src));
+      const swapCount = Math.floor(images.length * 0.35);
+
+      if (candidates.length < swapCount) {
+        const remaining = runningPool.filter(src => !candidates.includes(src));
+        shuffle(remaining);
+        candidates = candidates.concat(remaining.slice(0, swapCount - candidates.length));
+      } else if (candidates.length > swapCount) {
+        shuffle(candidates);
+        candidates = candidates.slice(0, swapCount);
+      }
+
+      swapPool = [...candidates];
+      runningPool = runningPool.filter(src => !swapPool.includes(src));
+      swapQueue = [...swapPool];
+      shuffle(swapQueue);
+    }
+
+    function createImage(src) {
+      const img = document.createElement("img");
+      img.src = src;
+      img.dataset.src = src;
+      return img;
+    }
+
+    function buildStrip(pool) {
+      const strip = document.createElement("div");
+      strip.className = "strip";
+      for (let i = 0; i < STRIP_REPEAT; i++) {
+        pool.forEach(src => strip.appendChild(createImage(src)));
+      }
+      return strip;
+    }
+
+    function setupStrips() {
+      const half = Math.floor(runningPool.length / 2);
+      const topPool = runningPool.slice(0, half);
+      const bottomPool = runningPool.slice(half);
+
+      const newTop = buildStrip(topPool);
+      const newBottom = buildStrip(bottomPool);
+
+      const oldTop = document.getElementById("strip-top");
+      const oldBottom = document.getElementById("strip-bottom");
+
+      oldTop.parentNode.replaceChild(newTop, oldTop);
+      oldBottom.parentNode.replaceChild(newBottom, oldBottom);
+
+      newTop.id = "strip-top";
+      newBottom.id = "strip-bottom";
+      topStrip = newTop;
+      bottomStrip = newBottom;
+    }
+
+    function getVisibleImages(strip) {
+      return Array.from(strip.querySelectorAll("img")).filter(img => {
+        const rect = img.getBoundingClientRect();
+        return rect.right > 0 && rect.left < window.innerWidth;
+      });
+    }
+
+    function getCenterImages(strip) {
+      const centerX = window.innerWidth / 2;
+      const zoneMin = centerX - window.innerWidth * CENTER_ZONE;
+      const zoneMax = centerX + window.innerWidth * CENTER_ZONE;
+      return getVisibleImages(strip).filter(img => {
+        const rect = img.getBoundingClientRect();
+        const imgCenter = rect.left + rect.width / 2;
+        return imgCenter >= zoneMin && imgCenter <= zoneMax;
+      });
+    }
+
+    function isRecentlySwapped(src) {
+      const last = swapCooldown.get(src);
+      return last && Date.now() - last < SWAP_PROTECTION;
+    }
+
+    function markAsSwapped(src) {
+      swapCooldown.set(src, Date.now());
+    }
+
+    function getNextSwapImage(currentVisibleSet) {
+      while (swapQueue.length > 0) {
+        const candidate = swapQueue.shift();
+        if (!currentVisibleSet.has(candidate) && !isRecentlySwapped(candidate)) {
+          markAsSwapped(candidate);
+          return candidate;
+        }
+      }
+      return null;
+    }
+
+    function replaceImageInStrip(strip, oldSrc, newSrc) {
+      const matchingImgs = Array.from(strip.querySelectorAll("img"))
+        .filter(img => img.dataset.src === oldSrc);
+
+      if (matchingImgs.length === 0) return;
+
+      matchingImgs.forEach(img => img.style.opacity = "0.2");
+
+      setTimeout(() => {
+        matchingImgs.forEach(img => {
+          img.src = newSrc;
+          img.dataset.src = newSrc;
+          img.style.opacity = "1";
+        });
+        swapSound.currentTime = 0;
+        swapSound.play().catch(() => {});
+      }, 500);
+    }
+
+    function performSwap(strip, lastSwapRef) {
+      const now = Date.now();
+      if (now - lastSwapRef.value < SWAP_DELAY) return;
+
+      const centerImages = getCenterImages(strip).filter(img => !isRecentlySwapped(img.dataset.src));
+      if (centerImages.length === 0) return;
+
+      const visibleNow = new Set([
+        ...getVisibleImages(topStrip).map(i => i.dataset.src),
+        ...getVisibleImages(bottomStrip).map(i => i.dataset.src)
+      ]);
+
+      const targetImg = centerImages[Math.floor(Math.random() * centerImages.length)];
+      const oldSrc = targetImg.dataset.src;
+      const newSrc = getNextSwapImage(visibleNow);
+
+      if (!newSrc) return;
+
+      runningPool = runningPool.filter(src => src !== oldSrc);
+      if (!runningPool.includes(newSrc)) runningPool.push(newSrc);
+      swapPool = swapPool.filter(src => src !== newSrc);
+
+      replaceImageInStrip(strip, oldSrc, newSrc);
+
+      markAsSwapped(oldSrc);
+      lastSwapRef.value = Date.now();
+    }
+
+    function periodicUpdate() {
+      performSwap(topStrip, { get value() { return lastSwapTop; }, set value(v) { lastSwapTop = v; } });
+
+      setTimeout(() => {
+        performSwap(bottomStrip, { get value() { return lastSwapBottom; }, set value(v) { lastSwapBottom = v; } });
+      }, 1000);
+
+      if (swapQueue.length === 0) {
+        splitPools();
+      }
+
+      const delay = SWAP_INTERVAL_MIN + Math.random() * (SWAP_INTERVAL_MAX - SWAP_INTERVAL_MIN);
+      setTimeout(periodicUpdate, delay);
+    }
+
+    function init() {
+      splitPools();
+      setupStrips();
+      periodicUpdate();
+    }
+
+    // Start nach Klick
+    document.getElementById("playButton").addEventListener("click", () => {
+      document.getElementById("startScreen").style.display = "none";
+      init();
+    });
+  </script>
+</body>
+</html>
