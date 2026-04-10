@@ -9,9 +9,54 @@
     <style>
         .slide { display: none; }
         .slide.active { display: block; }
+        
+        #thumbnail-container {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 4px 8px 8px 8px;
+            background: rgba(0, 0, 0, 0.5);
+            scroll-behavior: smooth;
+        }
+        
+        #thumbnail-container::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        #thumbnail-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        #thumbnail-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+        }
+        
+        .thumbnail {
+            flex-shrink: 0;
+            height: 50px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+            object-fit: contain;
+        }
+        
+        .thumbnail:hover {
+            opacity: 0.9;
+            border-color: rgb(180, 83, 9);
+        }
+        
+        .thumbnail.active-thumb {
+            opacity: 1;
+            border-color: rgb(250, 204, 21);
+        }
     </style>
 </head>
-<body class="bg-zinc-950 text-white min-h-screen overflow-hidden">
+<body class="bg-zinc-950 text-white min-h-screen flex flex-col">
 
     <!-- NAME NAME oben links -->
     <div class="fixed top-0 left-0 z-50 p-8">
@@ -21,10 +66,10 @@
     </div>
 
     <!-- Slideshow -->
-    <div class="h-screen flex items-center justify-center p-8 relative" id="slideshow-container">
+    <div class="flex-1 flex items-center justify-center p-8 relative overflow-hidden" id="slideshow-container">
         
         <!-- Info Button unten links -->
-        <div class="fixed bottom-8 left-8 z-50 group">
+        <div class="fixed bottom-24 left-8 z-50 group">
             <div id="info-button"
                  class="w-10 h-10 flex items-center justify-center text-3xl cursor-pointer hover:text-amber-300 transition-colors">
                 ?
@@ -44,24 +89,45 @@
         </button>
     </div>
 
+    <!-- Thumbnail Strip am unteren Rand -->
+    <div class="h-16 border-t border-white/10 bg-zinc-900" id="thumbnail-container"></div>
+
     <script>
         let currentSlide = 0;
         const slides = [];
+        const thumbnails = [];
 
         for (let i = 1; i <= 32; i++) {
             const img = document.createElement('img');
             img.src = `bilder/gldani/bilder/gldani-${i.toString().padStart(2, '0')}.jpg`;
-            img.className = `slide w-full max-h-[92vh] object-contain mx-auto rounded`;
+            img.className = `slide w-full max-h-[70vh] object-contain mx-auto rounded`;
             img.alt = `Gldani ${i}`;
             document.getElementById('slideshow-container').appendChild(img);
             slides.push(img);
+
+            // Thumbnail erstellen
+            const thumb = document.createElement('img');
+            thumb.src = `bilder/gldani/bilder/gldani-${i.toString().padStart(2, '0')}.jpg`;
+            thumb.className = 'thumbnail';
+            thumb.alt = `Thumbnail ${i}`;
+            thumb.onclick = () => goToSlide(i - 1);
+            document.getElementById('thumbnail-container').appendChild(thumb);
+            thumbnails.push(thumb);
         }
 
-        if (slides.length > 0) slides[0].classList.add('active');
+        if (slides.length > 0) {
+            slides[0].classList.add('active');
+            thumbnails[0].classList.add('active-thumb');
+        }
 
         function showSlide(n) {
             slides.forEach(s => s.classList.remove('active'));
+            thumbnails.forEach(t => t.classList.remove('active-thumb'));
             slides[n].classList.add('active');
+            thumbnails[n].classList.add('active-thumb');
+
+            // Thumbnail in den sichtbaren Bereich scrollen
+            thumbnails[n].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
 
         function nextSlide() {
@@ -71,6 +137,11 @@
 
         function prevSlide() {
             currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function goToSlide(n) {
+            currentSlide = n;
             showSlide(currentSlide);
         }
 
