@@ -9,10 +9,11 @@
     
     <style>
         body {
-            background-image: url('ubersicht1.jpg');
+            background-color: #09090b;
             background-size: cover;
             background-position: center bottom;
             background-attachment: fixed;
+            transition: background-image 1s ease-in-out;
         }
         
         .category-title {
@@ -102,6 +103,29 @@
         
     </div>
     </div>
+
+    <script>
+        // Background image rotation
+        const backgroundImages = [
+            'ubersicht wechselnder hintergrund/wechslend (1).jpg',
+            'ubersicht wechselnder hintergrund/wechslend (2).jpg',
+            'ubersicht wechselnder hintergrund/wechslend (3).jpg',
+            'ubersicht wechselnder hintergrund/wechslend (4).jpg'
+        ];
+        
+        let currentImageIndex = 0;
+        
+        function rotateBackground() {
+            document.body.style.backgroundImage = `url('${backgroundImages[currentImageIndex]}')`;
+            currentImageIndex = (currentImageIndex + 1) % backgroundImages.length;
+        }
+        
+        // Set initial background
+        rotateBackground();
+        
+        // Rotate every 5 seconds
+        setInterval(rotateBackground, 5000);
+    </script>
 
 </body>
 </html>
