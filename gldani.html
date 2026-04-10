@@ -10,6 +10,22 @@
         .slide { display: none; }
         .slide.active { display: block; }
         
+        #info-button {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        #info-button:hover {
+            border-color: rgb(250, 204, 21);
+            background: rgba(250, 204, 21, 0.1);
+        }
+        
         #thumbnail-container {
             display: flex;
             gap: 8px;
@@ -71,7 +87,7 @@
         <!-- Info Button unten links -->
         <div class="fixed bottom-24 left-8 z-50 group">
             <div id="info-button"
-                 class="w-10 h-10 flex items-center justify-center text-3xl cursor-pointer hover:text-amber-300 transition-colors">
+                 class="text-3xl cursor-pointer hover:text-amber-300 transition-colors">
                 ?
             </div>
         </div>
